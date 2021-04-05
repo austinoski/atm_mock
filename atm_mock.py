@@ -53,8 +53,7 @@ def operations():
 
     elif selectedOption == 2:
         deposit_amount = int(input('How much would you like to deposit?\n'))
-        user_database[current_user]['balance'] = \
-            user_database[current_user]['balance'] + deposit_amount
+        user_database[current_user]['balance'] += deposit_amount
         print('Your current balance is #%d' %user_database[current_user]['balance'])
 
     elif selectedOption == 3:
