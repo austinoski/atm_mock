@@ -43,9 +43,13 @@ def operations():
 
     if selectedOption == 1:
         withdrawal_amount = int(input('How much would you like to withdraw?\n'))
-        user_database[current_user]['balance'] = \
-            user_database[current_user]['balance'] - withdrawal_amount
-        print('Take your cash')
+        current_balance = user_database[current_user]['balance']
+        if withdrawal_amount > current_balance:
+            print('Insufficient Fund')
+        else:
+            current_balance -= withdrawal_amount
+            user_database[current_user]['balance'] = current_balance
+            print('Take your cash')
 
     elif selectedOption == 2:
         deposit_amount = int(input('How much would you like to deposit?\n'))
@@ -58,7 +62,7 @@ def operations():
         print('Thank you for contacting us')
     
     elif selectedOption == 4:
-        print('Account Details \n')
+        print('Account Details')
         print('Username: %s' %current_user)
         for key, value in user_database[current_user].items():
             if key == 'password':
@@ -116,27 +120,68 @@ def register():
     login()
 
 
+def reset_password():
+    username = input('Enter your username \n')
+    try:
+        user = user_database[username]
+    except KeyError:
+        print('No account found for user %s' %username)
+
+    accountNumber = input('Enter account number for %s \n' %username)
+    if(accountNumber == user['accountNumber']):
+        resetSuccess = False
+        while not resetSuccess:
+            new_password = input('Enter new password \n')
+            repeat_password = input('Enter new password again \n')
+
+            if new_password == repeat_password:
+                user_database[username]['password'] = new_password
+                resetSuccess = True
+            else:
+                print('Passwords did not match. Please try again')
+        print('Password reset successfully')
+    else:
+        print('Invalid account number for user %s' %username)
+
+
 def atmMockApp():
     try:
         print('Welcome, what would you like to do?')
         print('1. Login')
         print('2. Register')
+        print('3. Reset Password')
+        print('4. Exit')
 
         selectedAction = int(input('Select an option \n'))
 
         if(selectedAction == 1):
             login()
             while True:
+                print()
                 operations()
-                sleep(3)
+                sleep(2)
         
         elif(selectedAction == 2):
             register()
             while True:
+                print()
                 operations()
-                sleep(3)
+                sleep(2)
+        
+        elif(selectedAction == 3):
+            reset_password()
+            sleep(1)
+            print()
+            atmMockApp()
+
+        elif(selectedAction == 4):
+            exit()
+
+        else:
+            print('Invalid selection. Please try again \n')
+            atmMockApp()
     except Exception:
-        print('Unexpected error occurred. Please try again.')
+        print('Unexpected error occurred. Please try again \n')
         atmMockApp()
 
 
