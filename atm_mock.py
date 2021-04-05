@@ -1,5 +1,4 @@
 from datetime import datetime
-from time import sleep
 
 
 user_database = {
@@ -116,7 +115,6 @@ def register():
             isRegisterSuccessful = True
         else:
             print('%s not available. Pick a different username' %username)
-    login()
 
 
 def reset_password():
@@ -138,50 +136,46 @@ def reset_password():
                 resetSuccess = True
             else:
                 print('Passwords did not match. Please try again')
-        print('Password reset successfully')
+        print('Password reset successfully. Please login')
     else:
         print('Invalid account number for user %s' %username)
 
 
 def atmMockApp():
-    try:
-        print('Welcome, what would you like to do?')
-        print('1. Login')
-        print('2. Register')
-        print('3. Reset Password')
-        print('4. Exit')
+    print('Welcome, what would you like to do?')
+    print('1. Login')
+    print('2. Register')
+    print('3. Reset Password')
+    print('4. Exit')
 
+    try:
         selectedAction = int(input('Select an option \n'))
 
         if(selectedAction == 1):
             login()
             while True:
-                print()
                 operations()
-                sleep(2)
         
         elif(selectedAction == 2):
             register()
+            login()
             while True:
-                print()
                 operations()
-                sleep(2)
         
         elif(selectedAction == 3):
             reset_password()
-            sleep(1)
-            print()
-            atmMockApp()
+            login()
+            while True:
+                operations()
 
         elif(selectedAction == 4):
             exit()
 
         else:
             print('Invalid selection. Please try again \n')
-            atmMockApp()
+
     except Exception:
         print('Unexpected error occurred. Please try again \n')
-        atmMockApp()
 
 
 atmMockApp()
